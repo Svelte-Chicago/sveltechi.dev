@@ -27,6 +27,7 @@
   },
   "type": "module",
   "dependencies": {
+    "firebase": "^9.7.0",
     "svelte-awesome": "^2.4.6"
   }
 }
