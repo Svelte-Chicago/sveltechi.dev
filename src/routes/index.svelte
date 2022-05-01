@@ -1,29 +1,41 @@
 <script>
     import Icon from 'svelte-awesome';
     import { twitter, github } from 'svelte-awesome/icons';
+
+    const socials = [{
+        icon: twitter,
+        url: 'https://twitter.com/SvelteChicago'
+    },{
+        icon: github,
+        url: 'https://github.com/svelte-chicago/'
+    }]
 </script>
 
 
-<div class='w-full relative max-w-4xl h-screen text-center border-red-600 border-l-2 border-r-2'>
+<div class='w-full relative max-w-4xl h-full min-h-screen text-center border-primary border-l-2 border-r-2'>
+    <!-- Chicago Flag -->
     <img src="/chicago_flag.svg" class='w-full' alt="Flag of the City of Chicago"/>
-    <div class="absolute bottom-[30%] left-6 align-middle ">
-        <div class="border-red-600 lg:h-[10rem] lg:w-[10rem] sm:h-[7rem] sm:w-[7rem] bg-white border-8 rounded-full p-4 align-middle inline-block">
+
+    <!-- Logo and images -->
+    <div class="flex items-center justify-start gap-x-4 ml-8 lg:ml-24 -mt-4 lg:-mt-48">
+        <div class="border-primary lg:h-[10rem] lg:w-[10rem] h-28 w-28 bg-white border-8 rounded-full p-4 aspect-square">
             <img src="/svelte_chicago_125x125.png" alt="Svelte Society Chicago Logo" />
         </div>
-        <div class="text-red-600 g:h-[10rem] lg:w-[10rem] sm:h-[7rem] sm:w-[7rem] pt-6 inline-block rounded-full align-middle pl-6">
-            <a href="https://twitter.com/SvelteChicago" target="_new"><Icon data={twitter} scale="4" class="bg-white w-full h-full border-2 border-red-600 rounded-full" /></a>
-        </div>
-        <div class="text-red-600 g:h-[10rem] lg:w-[10rem] sm:h-[7rem] sm:w-[7rem] pt-6 inline-block rounded-full align-middle pl-6 ">
-            <a href="https://github.com/svelte-chicago/" target="_new"><Icon data={github} scale="4" class="bg-white w-full h-full border-2 border-red-600 rounded-full" /></a>
-        </div>
+        {#each socials as {url, icon} (url)}
+            <div class="text-primary lg:w-36 h-20 w-20 rounded-full">
+                <a href="{url}" target="_new"><Icon data={icon} scale="4" class="bg-white w-full h-full border-2 p-2 lg:p-0 border-primary rounded-full aspect-square" /></a>
+            </div>
+        {/each}
     </div>
-    <div class='absolute bottom-[8rem] left-[8rem] text-left'>
-        <div class="text-4xl">
+    
+    <!-- Body Text -->
+    <div class='text-left px-8 md:px-32 mt-12'>
+        <div class="text-4xl mb-3">
             Svelte Society: Chicago
         </div>
-        <div class="text-xl">
-            We're just getting started - find us on twitter and github or
-            join us at an <a href="/events" class="text-red-600 underline">event</a>
+        <div class="text-xl pb-8">
+            We're just getting started - find us on Twitter and GitHub or
+            join us at an <a href="/events" class="text-primary underline">event</a>
         </div>
     </div>
 </div>

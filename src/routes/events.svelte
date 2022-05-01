@@ -42,7 +42,7 @@
                 <td>{ev.data().Date.toDate()}</td>
                 <td>{ev.data().Location}</td>
                 <td>{ev.data().Description}</td>
-                <td class="text-center"><a href="/event/{ev.id}" class="text-red-600"><Icon data={calendar} /></a></td>
+                <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
                 </tr>
             {/each}
         {:catch error}
