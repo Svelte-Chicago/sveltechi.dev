@@ -1,25 +1,29 @@
 <script>
-    import { firebaseConfig } from "$lib/firebase";
-    import { initializeApp } from "firebase/app";
-    import { getFirestore, collection, getDocs, query, where } from "firebase/firestore";
-
     import Icon from 'svelte-awesome';
     import { calendar } from 'svelte-awesome/icons';
+    import { onMount } from "svelte";
 
-    const fb = initializeApp(firebaseConfig);
-    const db = getFirestore(fb);
 
-    async function newEventList() {
-        const q = query(collection(db, "Events"), where("Date",">=",new Date()))
-        const eventQuery = await getDocs(q);
-        return eventQuery.docs;
-    }
+    const event_endpoint = "/api/events";
 
-    async function oldEventList() {
-        const q = query(collection(db, "Events"), where("Date","<=",new Date()))
-        const eventQuery = await getDocs(q);
-        return eventQuery.docs;
-    }
+    const newEventList = (async () => {
+        const response =  await fetch('/api/events');
+        const data = await response.json();
+        return data;
+    })
+
+    const oldEventList = (async () => {
+        const response =  await fetch('/api/events?old=true');
+        const data = await response.json();
+        console.log(data);
+        console.log(data.events.length);
+        return data;
+    })
+
+    // onMount(async () => {
+    //     await newEventList();
+    //     await oldEventList();
+    // })
 
 </script>
 
@@ -36,12 +40,13 @@
             </tr>
 
         {:then evs}
-            {#each evs as ev}
+            {#each evs.events as ev}
+
                 <tr class="eventrow">
-                <td>{ev.data().Title}</td>
-                <td>{ev.data().Date.toDate()}</td>
-                <td>{ev.data().Location}</td>
-                <td>{ev.data().Description}</td>
+                <td>{ev.Title}</td>
+                <td>{ev.Date}</td>
+                <td>{ev.Location}</td>
+                <td>{ev.Description}</td>
                 <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
                 </tr>
             {/each}
@@ -63,13 +68,13 @@
             </tr>
 
         {:then evs}
-            {#if evs.length > 0}
-                {#each evs as ev}
+            {#if evs.events.length > 0}
+                {#each evs.events as ev}
                     <tr class="eventrow">
-                    <td>{ev.data().Title}</td>
-                    <td>{ev.data().Date.toDate()}</td>
-                    <td>{ev.data().Location}</td>
-                    <td>{ev.data().Description}</td>
+                        <td>{ev.Title}</td>
+                        <td>{ev.Date}</td>
+                        <td>{ev.Location}</td>
+                        <td>{ev.Description}</td>
                     <td></td>
                     </tr>
                 {/each}
