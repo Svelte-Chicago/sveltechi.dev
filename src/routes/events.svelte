@@ -15,8 +15,6 @@
     const oldEventList = (async () => {
         const response =  await fetch('/api/events?old=true');
         const data = await response.json();
-        console.log(data);
-        console.log(data.events.length);
         return data;
     })
 

@@ -12,6 +12,10 @@ from firebase_admin import credentials, firestore
 
 log = logging.getLogger(__name__)
 log.setLevel(logging.INFO)
+creds = json.loads(os.getenv("GOOGLE_AUTH"))
+certificate = credentials.Certificate(creds)
+firebase_admin.initialize_app(certificate, {"projectId": creds['project_id']})
+
 
 base_route: str = "/api"
 
@@ -27,11 +31,7 @@ class BaseHandler:
 
     def connect_firebase(self) -> None:
         try:
-            creds = json.loads(os.getenv("GOOGLE_AUTH"))
-            certificate = credentials.Certificate(creds)
-            firebase_admin.initialize_app(certificate, {"projectId": creds['project_id']})
             self.db = firestore.client()
-
         except Exception as e:
             log.critical(f'{e}')
 
@@ -71,17 +71,29 @@ class EventsHandler(BaseHandler):
 
 
 class SingleEventHandler(BaseHandler):
-    def on_get(self, request, response) -> None:
-        db = firestore.client()
+    def on_get(self, request, response, **params) -> None:
 
-        events_ref = (
-            db.collection("Events").where("Date", ">=", datetime.now())
-            if not request.get_param("old")
-            else db.collection("Events").where("Date", "<=", datetime.now())
-        )
+        if not self.db:
+            self.connect_firebase()
+
+        try:
+            event_ref = self.db.collection("Events").document(params['id'])
+
+            doc = event_ref.get()
+
+            doc_dict = doc.to_dict()
+            doc_dict["id"] = doc.id
+            doc_dict["Date"] = doc_dict["Date"].rfc3339()
+
+            response.media = doc_dict
+
+        except Exception as fbe:
+            log.critical(f'{fbe}')
+            response.status = 500
+            response.media = {'status': 'an error has occurred and has been reported'}
 
 app = falcon.App(cors_enable=True)
 app.add_route(f"{base_route}/handler", BaseHandler())
 app.add_route(f"{base_route}/mail", MailHandler())
 app.add_route(f"{base_route}/events", EventsHandler(True))
-app.add_route(f"{base_route}/events/{{id}}", EventsHandler())
+app.add_route(f"{base_route}/events/{{id}}", SingleEventHandler(True))
