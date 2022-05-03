@@ -20,11 +20,6 @@
         return data;
     })
 
-    // onMount(async () => {
-    //     await newEventList();
-    //     await oldEventList();
-    // })
-
 </script>
 
 <div class="relative top-[3rem] max-w-3xl">
@@ -40,16 +35,19 @@
             </tr>
 
         {:then evs}
-            {#each evs.events as ev}
-
-                <tr class="eventrow">
-                <td>{ev.Title}</td>
-                <td>{ev.Date}</td>
-                <td>{ev.Location}</td>
-                <td>{ev.Description}</td>
-                <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
-                </tr>
-            {/each}
+            {#if evs.events.length > 0}
+                {#each evs.events as ev}
+                    <tr class="eventrow">
+                    <td>{ev.Title}</td>
+                    <td>{ev.Date}</td>
+                    <td>{ev.Location}</td>
+                    <td>{ev.Description}</td>
+                    <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
+                    </tr>
+                {/each}
+            {:else}
+                <tr><td colspan="5" class="text-center">No upcoming events currently scheduled</td></tr>
+            {/if}
         {:catch error}
             <tr><td>Could not get events...</td></tr>
         {/await}
@@ -79,7 +77,7 @@
                     </tr>
                 {/each}
             {:else}
-                    <tr><td colspan="5" class="text-center">No past events yet...</td></tr>
+                    <tr><td colspan="5" class="text-center">No past events yet</td></tr>
             {/if}
         {:catch error}
             <tr><td>Could not get events...</td></tr>
