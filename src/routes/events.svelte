@@ -1,10 +1,6 @@
 <script>
     import Icon from 'svelte-awesome';
     import { calendar } from 'svelte-awesome/icons';
-    import { onMount } from "svelte";
-
-
-    const event_endpoint = "/api/events";
 
     const newEventList = (async () => {
         const response =  await fetch('/api/events');
@@ -17,6 +13,12 @@
         const data = await response.json();
         return data;
     })
+
+    function date_format(timestamp) {
+        console.log(timestamp*1000)
+        return new Date(timestamp*1000)
+    }
+
 
 </script>
 
@@ -37,7 +39,7 @@
                 {#each evs.events as ev}
                     <tr class="eventrow">
                     <td>{ev.Title}</td>
-                    <td>{ev.Date}</td>
+                    <td>{date_format(ev.Date)}</td>
                     <td>{ev.Location}</td>
                     <td>{ev.Description}</td>
                     <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
@@ -68,7 +70,7 @@
                 {#each evs.events as ev}
                     <tr class="eventrow">
                         <td>{ev.Title}</td>
-                        <td>{ev.Date}</td>
+                        <td>{date_format(ev.Date)}</td>
                         <td>{ev.Location}</td>
                         <td>{ev.Description}</td>
                     <td></td>
