@@ -8,6 +8,7 @@ falcon = "*"
 firebase-admin = "*"
 
 [dev-packages]
+gunicorn = "*"
 
 [requires]
 python_version = "3.9"
