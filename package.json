@@ -12,6 +12,7 @@
     "format": "prettier --ignore-path .gitignore --write --plugin-search-dir=. ."
   },
   "devDependencies": {
+    "@sveltejs/adapter-vercel": "next",
     "@playwright/test": "^1.21.0",
     "@sveltejs/adapter-auto": "next",
     "@sveltejs/kit": "next",
