@@ -83,7 +83,6 @@ class EventsHandler(BaseHandler):
             events = []
             if request.get_param('old'):
                 events = [doc for doc in documents if int(doc['Date']) < int(datetime.now().timestamp()) ]
-
             else:
                 events = [doc for doc in documents if int(doc['Date']) > int(datetime.now().timestamp()) ]
 
