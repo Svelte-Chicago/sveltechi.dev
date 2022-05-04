@@ -27,14 +27,14 @@
             </div>
         {/each}
     </div>
-    
+
     <!-- Body Text -->
     <div class='text-left px-8 md:px-32 mt-12'>
         <div class="text-4xl mb-3">
             Svelte Society: Chicago
         </div>
         <div class="text-xl pb-8">
-            We're just getting started - find us on Twitter and GitHub or
+            We're just getting started and aim to be <a href="https://sveltesociety.dev/about/" class="text-primary underline">an inclusive group for all</a> to share their svelte stories - find us on Twitter and GitHub or
             join us at an <a href="/events" class="text-primary underline">event</a>
         </div>
     </div>
