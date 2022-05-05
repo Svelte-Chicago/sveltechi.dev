@@ -4,7 +4,7 @@
     ],
     "functions": {
         "api/[handler].py": {
-            "memory": 2048
+            "memory": 3008
         }
     }
 }
