@@ -1,5 +1,10 @@
 {
     "rewrites": [
         { "source": "/api/(.*)", "destination": "/api/[handler]" }
-    ]
+    ],
+    "functions": {
+        "api/[handler].py": {
+            "memory": 2048
+        }
+    }
 }

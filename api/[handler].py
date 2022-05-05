@@ -76,6 +76,7 @@ class EventsHandler(BaseHandler):
 
     def on_get(self, request, response, **params) -> None:
 
+
         if 'id' not in params.keys():
             logging.debug("GETTING EVENTS")
 
@@ -85,10 +86,11 @@ class EventsHandler(BaseHandler):
                 events = [doc for doc in documents if int(doc['Date']) < int(datetime.now().timestamp()) ]
             else:
                 events = [doc for doc in documents if int(doc['Date']) > int(datetime.now().timestamp()) ]
-
+            response.append_header('cache-control', 's-maxage=10, stale-while-revalidate')
             response.media = {'events': events }
         else:
             logging.debug(f"GETTING SINGLE EVENT {params['id']}")
+            response.append_header('cache-control', 's-maxage=10, stale-while-revalidate')
             response.media = self.get_single_document(params['id'])
 
     def get_documents(self) -> list:
