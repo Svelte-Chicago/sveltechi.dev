@@ -1,4 +1,6 @@
 <script>
+    const UNIX_TIMESTAMP_MULTIPLIER = 1000;
+
     import Icon from 'svelte-awesome';
     import { calendar } from 'svelte-awesome/icons';
 
@@ -15,8 +17,8 @@
     })
 
     function date_format(timestamp) {
-        console.log(timestamp*1000)
-        return new Date(timestamp*1000)
+        // TODO: make this prettier
+        return new Date(timestamp*UNIX_TIMESTAMP_MULTIPLIER)
     }
 
 
