@@ -26,15 +26,15 @@
 </script>
 
 
-<div class="relative top-12 max-w-3xl flex flex-row justify-center">
+<div class="relative top-12 max-w-3xl flex flex-row justify-center pl-4 pr-4">
     <div class="border-primary lg:h-[10rem] lg:w-[10rem] h-28 w-28 bg-white border-8 rounded-full p-4 aspect-square">
         <img src="/svelte_chicago_125x125.png" alt="Svelte Society Chicago Logo" />
     </div>
     <div class="pl-8 flex flex-col align-middle">
         <div class="text-xl">Event: {ev.Title}</div>
-        <div>When: {date_format(ev.Date)} </div>
-        <div>Where: {ev.Location}</div>
-        <div>What: {ev.Description}</div>
+        <div><span class="font-bold">When:</span> {date_format(ev.Date)} </div>
+        <div><span class="font-bold">Where: </span>{ev.Location}</div>
+        <div><span class="font-bold">What: </span>{ev.Description}</div>
     </div>
 </div>
 <div class="pt-[8rem] text-2xl">
