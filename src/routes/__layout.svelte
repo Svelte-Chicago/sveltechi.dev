@@ -16,7 +16,7 @@
     </div>
     <div class="pr-8" />
 </div>
-<div class="flex flex-col items-center max-h-screen">
+<div class="flex flex-col items-center max-h-screen max-w-screen">
     <slot />
 </div>
 
