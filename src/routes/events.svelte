@@ -4,15 +4,17 @@
     import Icon from 'svelte-awesome';
     import { calendar } from 'svelte-awesome/icons';
 
-    const newEventList = (async () => {
-        const response =  await fetch('/api/events');
-        const data = await response.json();
+    import events from '../data/events.json';
+
+    const newEventList = (() => {
+        const time = Date.now();
+        const data = events.filter(ev => ev.Date > (time / UNIX_TIMESTAMP_MULTIPLIER));
         return data;
     })
 
-    const oldEventList = (async () => {
-        const response =  await fetch('/api/events?old=true');
-        const data = await response.json();
+    const oldEventList = (() => {
+        const time = Date.now();
+        const data = events.filter(ev => ev.Date < (time / UNIX_TIMESTAMP_MULTIPLIER));
         return data;
     })
 
@@ -21,6 +23,8 @@
         return new Date(timestamp*UNIX_TIMESTAMP_MULTIPLIER)
     }
 
+    const new_events = newEventList();
+    const old_events = oldEventList();
 
 </script>
 
@@ -31,28 +35,19 @@
             <td>What?</td><td>Date & Time</td><td>Location</td><td>Description</td><td>Join Us</td>
         </thead>
 
-        {#await newEventList()}
-            <tr>
-                <td colspn="5">Getting upcoming events...</td>
-            </tr>
-
-        {:then evs}
-            {#if evs.events.length > 0}
-                {#each evs.events as ev}
-                    <tr class="eventrow">
-                    <td>{ev.Title}</td>
-                    <td>{date_format(ev.Date)}</td>
-                    <td>{ev.Location}</td>
-                    <td>{ev.Description}</td>
-                    <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
-                    </tr>
-                {/each}
-            {:else}
-                <tr><td colspan="5" class="text-center">No upcoming events currently scheduled</td></tr>
-            {/if}
-        {:catch error}
-            <tr><td>Could not get events...</td></tr>
-        {/await}
+        {#if new_events.length > 0}
+            {#each new_events as ev}
+                <tr class="eventrow">
+                <td>{ev.Title}</td>
+                <td>{date_format(ev.Date)}</td>
+                <td>{ev.Location}</td>
+                <td>{ev.Description}</td>
+                <td class="text-center"><a href="/event/{ev.id}" class="text-primary"><Icon data={calendar} /></a></td>
+                </tr>
+            {/each}
+        {:else}
+            <tr><td colspan="5" class="text-center">No upcoming events currently scheduled</td></tr>
+        {/if}
 
     <tr><td colspan="5">&nbsp;</td></tr>
     <tr><td colspan="5">&nbsp;</td></tr>
@@ -62,29 +57,20 @@
             </tr>
             <td>What?</td><td>Date & Time</td><td>Location</td><td>Description</td><td></td>
         </thead>
-        {#await oldEventList()}
-            <tr>
-                <td colspn="5">Getting past events...</td>
-            </tr>
 
-        {:then evs}
-            {#if evs.events.length > 0}
-                {#each evs.events as ev}
-                    <tr class="eventrow">
-                        <td>{ev.Title}</td>
-                        <td>{date_format(ev.Date)}</td>
-                        <td>{ev.Location}</td>
-                        <td>{ev.Description}</td>
-                    <td></td>
-                    </tr>
-                {/each}
-            {:else}
-                    <tr><td colspan="5" class="text-center">No past events yet</td></tr>
-            {/if}
-        {:catch error}
-            <tr><td>Could not get events...</td></tr>
-        {/await}
-
+        {#if old_events.length > 0}
+            {#each old_events as ev}
+                <tr class="eventrow">
+                    <td>{ev.Title}</td>
+                    <td>{date_format(ev.Date)}</td>
+                    <td>{ev.Location}</td>
+                    <td>{ev.Description}</td>
+                <td></td>
+                </tr>
+            {/each}
+        {:else}
+                <tr><td colspan="5" class="text-center">No past events yet</td></tr>
+        {/if}
     </table>
 </div>
 
